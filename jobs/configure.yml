@@ -1,0 +1,17 @@
+---
+- name: Common configuration
+  hosts: all
+  gather_facts: true
+  become: true
+  roles:
+    - role: base
+      tags: base
+    - role: sshd
+      tags: ssh
+# TODO
+#    - role: fail2ban
+#      tags: fail2ban
+#    - role: nullmailer
+#      tags: mail
+#    - role: munin-node
+#      tags: [munin, munin-node]

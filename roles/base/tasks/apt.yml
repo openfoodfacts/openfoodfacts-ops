@@ -1,0 +1,64 @@
+---
+- name: "Force APT to use IPv4 (avoid bad or slow IPv6 mirrors)"
+  ansible.builtin.template:
+    src: apt-force-ipv4
+    dest: /etc/apt/apt.conf.d/99force-ipv4
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: "Enable backport repository"
+  ansible.builtin.apt_repository:
+    repo: 'deb http://deb.debian.org/debian {{ ansible_distribution_release }}-backports main contrib non-free'
+    filename: debian-backports
+    state: present
+  tags:
+    - system
+
+- name: "Find python package prefix"
+  ansible.builtin.set_fact:
+    python_pkg_prefix: 'python{% if ansible_python.version.major == 3 %}3{% endif %}'
+  tags:
+    - system
+
+- name: "Install essential apt dependencies"
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - aptitude
+      - curl
+      - dirmngr
+      - git
+      - htop
+      - iotop
+      - lsb-release
+      - screen
+      - sudo
+      - unattended-upgrades
+      - vim
+      - '{{ python_pkg_prefix }}-apt'
+      - '{{ python_pkg_prefix }}-httplib2'
+      - '{{ python_pkg_prefix }}-pip'
+      - '{{ python_pkg_prefix }}-setuptools'
+      - '{{ python_pkg_prefix }}-psycopg2'
+      - ansible
+    state: present
+    update_cache: true
+  tags:
+    - system
+
+- name: "Install APT auto-upgrades configuration"
+  ansible.builtin.template:
+    src: apt-auto-upgrades
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: "Install unattended-upgrades configuration"
+  ansible.builtin.template:
+    src: apt-unattended-upgrades
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    owner: root
+    group: root
+    mode: '0644'

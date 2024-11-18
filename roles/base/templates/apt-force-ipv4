@@ -1,0 +1,4 @@
+// {{ ansible_managed }}
+
+// Force IPv4 on APT to avoid crappy ipv6 mirrors
+Acquire::ForceIPv4 true;

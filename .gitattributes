@@ -1,0 +1,13 @@
+# Detect text files automatically
+* text=auto
+
+# Encrypt certificates folder
+certificates/* filter=git-crypt diff=git-crypt
+
+# Encrypt private ssh keys
+keys/*.key filter=git-crypt diff=git-crypt
+
+# Encrypt secret yml files
+secret.yml filter=git-crypt diff=git-crypt
+secrets.yml filter=git-crypt diff=git-crypt
+*-secrets.yml filter=git-crypt diff=git-crypt

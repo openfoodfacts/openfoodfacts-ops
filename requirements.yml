@@ -1,0 +1,11 @@
+---
+collections:
+  - name: community.general
+    version: 10.0.1
+
+  - name: community.crypto
+    version: 2.22.3
+
+roles:
+  - src: willshersystems.sshd
+    version: v0.25.0

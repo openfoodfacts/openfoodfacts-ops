@@ -1,0 +1,41 @@
+---
+- name: "Reload systemd"
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: "Restart systemd-timesyncd"
+  become: true
+  ansible.builtin.systemd:
+    service: systemd-timesyncd
+    state: restarted
+
+- name: "Restart systemd-networkd"
+  become: true
+  ansible.builtin.systemd:
+    service: systemd-networkd
+    state: restarted
+
+- name: "Restart systemd-resolved"
+  become: true
+  ansible.builtin.systemd:
+    service: systemd-resolved
+    state: restarted
+
+- name: "Restart systemd-hostnamed"
+  become: true
+  ansible.builtin.systemd:
+    service: systemd-hostnamed
+    state: restarted
+
+- name: "Restart systemd-logind"
+  become: true
+  ansible.builtin.systemd:
+    service: systemd-logind
+    state: restarted
+
+- name: "Restart cron"
+  become: true
+  ansible.builtin.systemd:
+    service: cron
+    state: restarted
