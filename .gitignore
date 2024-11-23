@@ -2,6 +2,7 @@
 .vagrant/
 collections/
 roles/willshersystems.sshd/
+roles/oefenweb.fail2ban/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
