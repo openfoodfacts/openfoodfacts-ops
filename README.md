@@ -16,7 +16,7 @@
 sudo apt install git python3 python3-pip python3-venv
 ```
 
-####OSX
+#### OSX
 ```bash
 brew install git python
 python3 -m ensurepip --upgrade
