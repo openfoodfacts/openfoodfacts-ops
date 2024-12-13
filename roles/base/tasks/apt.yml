@@ -15,12 +15,15 @@
   tags:
     - system
 
+# TODO: this might not be useful as of today ;-)
 - name: "Find python package prefix"
   ansible.builtin.set_fact:
     python_pkg_prefix: 'python{% if ansible_python.version.major == 3 %}3{% endif %}'
   tags:
     - system
 
+# TODO: do we need to install ansible everywhere ?
+# TODO: move htop/iotop/screen install elsewhere
 - name: "Install essential apt dependencies"
   ansible.builtin.apt:
     pkg:

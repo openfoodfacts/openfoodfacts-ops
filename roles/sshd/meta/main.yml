@@ -16,5 +16,6 @@ galaxy_info:
         - bullseye  # Debian 11
         - bookworm  # Debian 12
 
+# TODO: remove we run it also in tasks
 dependencies:
   - willshersystems.sshd

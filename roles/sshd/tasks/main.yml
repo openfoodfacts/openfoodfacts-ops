@@ -3,6 +3,7 @@
   ansible.builtin.import_role:
     name: willshersystems.sshd
 
+# TODO: remove from here
 - name: Install mosh
   ansible.builtin.apt:
     pkg: mosh
@@ -11,18 +12,18 @@
     - system
     - mosh
 
-- name: Copy default ssh public key
+- name: Copy default ssh public key for ansible operator
   ansible.posix.authorized_key:
     user: '{{ ansible_ssh_user }}'
     key: '{{ lookup("repo", "keys/default.pub") }}'
 
-- name: Authorize ssh public keys from github
+- name: Authorize ssh public keys from github for ansible operator
   ansible.posix.authorized_key:
     user: '{{ ansible_ssh_user }}'
     key: '{{ sshd_github_url }}/{{ item }}.keys'
   with_items: '{{ sshd_github_authorized_users }}'
 
-- name: Revoke ssh public keys from github
+- name: Revoke ssh public keys from github for ansible operator
   ansible.posix.authorized_key:
     user: '{{ ansible_ssh_user }}'
     key: '{{ sshd_github_url }}/{{ item }}.keys'
