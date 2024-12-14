@@ -15,3 +15,5 @@
 #      tags: mail
 #    - role: munin-node
 #      tags: [munin, munin-node]
+#    - firewall DENY input + verify ssh rule
+#    - set locale en_US + fr_FR
