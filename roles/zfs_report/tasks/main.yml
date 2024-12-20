@@ -1,0 +1,22 @@
+- name: "Get all ZFS pools"
+  community.general.zpool_facts:
+    parsable: true
+
+- name: "Get all ZFS datasets"
+  community.general.zfs_facts:
+    name: "{{ item.name }}"
+    parsable: true
+    recurse: true
+    type: volume
+  with_items: "{{ ansible_zfs_pools }}"
+  register: zfs_data
+
+- ansible.builtin.include_tasks:
+    file: display_dataset.yml
+    apply:
+      vars:
+        datasets: "{{ zfs_data_item.ansible_facts.ansible_zfs_datasets }}"
+        zpool_name: "{{ zfs_data_item.name }}"
+  with_items: "{{ zfs_data.results }}"
+  loop_control:
+    loop_var: zfs_data_item

@@ -1,0 +1,12 @@
+---
+# The goal of this job is to generate a reports
+# of the current state of the servers
+# than can either serve as documentation of the architecture
+# or as a mean to check some requirements are met
+# (like number of backups replications)
+- name: Generate servers reports
+  hosts: all
+  gather_facts: true
+  become: true
+  roles:
+  - role: zfs_report
