@@ -1,0 +1,5 @@
+- ansible.builtin.debug:
+    msg: "{{ zpool_name }}"
+- ansible.builtin.debug:
+    msg: "- {{ item.name }}"
+  loop: "{{ datasets }}"

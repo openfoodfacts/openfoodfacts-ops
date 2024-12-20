@@ -1,6 +1,8 @@
 ---
 - name: Common configuration
-  hosts: all
+  # limit to host that were configured using this role
+  hosts:
+  - ops_installed
   gather_facts: true
   become: true
   roles:
