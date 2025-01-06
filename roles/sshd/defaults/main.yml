@@ -1,9 +1,9 @@
 ---
 # Github url
-sshd_github_url: https://github.com
+github_url: "{{ sshd_github_url | default('https://github.com') }}"
 
 # Github authorized users
-sshd_github_authorized_users: []
+github_authorized_users: "{{ sshd_github_authorized_users | default([]) }}"
 
 # Github revoked users
-sshd_github_revoked_users: []
+github_revoked_users: "{{ sshd_github_revoked_users | default([]) }}"

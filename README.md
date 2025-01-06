@@ -133,3 +133,15 @@ ansible-playbook jobs/configure.yml
 ## Contributing
 
 Please use ansible-lint before submitting a PR.
+
+### Variables management
+
+It can be difficult in ansible to understand where a variable is defined,
+and where it is used.
+
+In this repository we will try to follow the following rules:
+* a role declares all the variables it uses in `defaults/main.yml`.
+  This is the interface of the role.
+* externally variables use a prefix using role name (eg: for sshd role, use `sshd_` prefix.)
+  * inside the role, the prefix is not used
+* secret always add the prefix `vault_` and must be encrypted with ansible-vault
