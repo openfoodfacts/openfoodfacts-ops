@@ -1,0 +1,31 @@
+---
+# For more details about variables and configuration files see:
+# - https://github.com/bruceg/nullmailer/blob/master/HOWTO
+# - https://manpages.debian.org/stretch/nullmailer/nullmailer.7.en.html
+# - https://manpages.debian.org/stretch/nullmailer/nullmailer-inject.1.en.html
+# - https://manpages.debian.org/stretch/nullmailer/nullmailer-send.8.en.html
+# - https://manpages.debian.org/stretch/nullmailer/nullmailer-queue.8.en.html
+
+# List of remotes
+# nullmailer will relay each mail to each of these lines
+# See: https://manpages.debian.org/stretch/nullmailer/nullmailer-send.8.en.html#CONTROL_FILES
+nullmailer__remotes: []
+
+# The default DNS domain used in different configuration variables of the role.
+nullmailer__domain: '{{ ansible_domain if ansible_domain else ansible_hostname }}'
+
+# Default fallback hostname (standard way, see: https://wiki.debian.org/EtcMailName)
+nullmailer__mailname: '{{ nullmailer__domain }}'
+
+# All mails to <user>@localhost or <user>@<nullmailer__mailname>
+# are redirected to this email if defined instead of local mailbox
+nullmailer__admin:
+
+# The string used to generate the Message-Id: header of sent messages.
+nullmailer__idhost: '{{ ansible_fqdn }}'
+
+# The string appended to the e-mail addresses without the "host" part.
+nullmailer__defaulthost: '{{ nullmailer__domain }}'
+
+# The string appended to the host part of the e-mail addresses without a dot.
+nullmailer__defaultdomain: '{{ nullmailer__domain }}'
