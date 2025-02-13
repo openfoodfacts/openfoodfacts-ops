@@ -5,6 +5,7 @@ sshd_github_authorized_users:
   - raphael0202
   - stephanegigandet
   - teleboas
+  - cquest
 
 # Default revoked users from github
 sshd_github_revoked_users:
