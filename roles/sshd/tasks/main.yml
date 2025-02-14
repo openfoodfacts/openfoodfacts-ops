@@ -20,12 +20,12 @@
 - name: Authorize ssh public keys from github for ansible operator
   ansible.posix.authorized_key:
     user: '{{ ansible_ssh_user }}'
-    key: '{{ sshd_github_url }}/{{ item }}.keys'
-  with_items: '{{ sshd_github_authorized_users }}'
+    key: '{{ github_url }}/{{ item }}.keys'
+  with_items: '{{ github_authorized_users }}'
 
 - name: Revoke ssh public keys from github for ansible operator
   ansible.posix.authorized_key:
     user: '{{ ansible_ssh_user }}'
-    key: '{{ sshd_github_url }}/{{ item }}.keys'
+    key: '{{ github_url }}/{{ item }}.keys'
     state: absent
-  with_items: '{{ sshd_github_revoked_users }}'
+  with_items: '{{ github_revoked_users }}'
