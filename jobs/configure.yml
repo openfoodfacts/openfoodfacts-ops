@@ -1,6 +1,6 @@
 ---
 - name: Common configuration
-  hosts: all
+  hosts: all:!non_ansible_hosts
   gather_facts: true
   become: true
   roles:
