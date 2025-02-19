@@ -28,10 +28,10 @@ gpg --import new-dev_pubkey.gpg
 gpg --list-keys
 ```
 
-Write down the id the key (e.g. `BC605835E6D7D31EC81F47281C2EF887DDBB95B2`). Tell gpg that you trust that the key really belongs to the person you want to add, by signing the key. Make sure you select the subkey 1 (the one that is used to encrypt/decrypt, more of that here: https://wiki.debian.org/Subkeys)
+Write down the id the key (e.g. `C4B6441EE0AFC4FDCDA147C82ABD6FA245F741B7`). Tell gpg that you trust that the key really belongs to the person you want to add, by signing the key. Make sure you select the subkey 1 (the one that is used to encrypt/decrypt, more of that here: https://wiki.debian.org/Subkeys)
 
 ```
-gpg --edit-key BC605835E6D7D31EC81F47281C2EF887DDBB95B2
+gpg --edit-key C4B6441EE0AFC4FDCDA147C82ABD6FA245F741B7
 >key 1
 >sign
 >save
@@ -41,13 +41,13 @@ gpg --edit-key BC605835E6D7D31EC81F47281C2EF887DDBB95B2
 Finally:
 
 ```
-git-crypt add-gpg-user BC605835E6D7D31EC81F47281C2EF887DDBB95B2
+git-crypt add-gpg-user C4B6441EE0AFC4FDCDA147C82ABD6FA245F741B7
 ```
 
-This will add a new file `.git-crypt/keys/default/0/BC605835E6D7D31EC81F47281C2EF887DDBB95B2.gpg`, that contains the repo key, encrypted by the new dev's public key. A new commit is created.
+This will add a new file `.git-crypt/keys/default/0/C4B6441EE0AFC4FDCDA147C82ABD6FA245F741B7.gpg`, that contains the repo key, encrypted by the new dev's public key. A new commit is created.
 
 
-## How it works
+## How it works (for those interested)
 
 The repository is (partially) encrypted using a private key.
 
@@ -58,17 +58,17 @@ Then the new user can use his private key to decrypt the repository private key.
 You can get the ID of the key corresponding to such a file:
 
 ```sh
-$ gpg --decrypt 24A773048A25A36038788F4F4C9CA77161408C46.gpg
-gpg: encrypted with ECDH key, ID F76D3C428B72F0EC
+$ gpg --decrypt C4B6441EE0AFC4FDCDA147C82ABD6FA245F741B7.gpg
+gpg: encrypted with ECDH key, ID 7371F7BF5E541E09
 gpg: decryption failed: No secret key
 ```
 
 If you already know the key, you'll also get friendly information:
 
 ```sh
-$ gpg --decrypt 24A773048A25A36038788F4F4C9CA77161408C46.gpg
-gpg: encrypted with 256-bit ECDH key, ID F76D3C428B72F0EC, created 2021-07-23
-      "Thomas Cholley <thomas.cholley@appenin.fr>"
+$ gpg --decrypt C4B6441EE0AFC4FDCDA147C82ABD6FA245F741B7.gpg
+gpg: encrypted with 255-bit ECDH key, ID 7371F7BF5E541E09, created 2025-02-14
+      "Alex Garel (Open Food Facts) <alex@openfoodfacts.org>"
 gpg: decryption failed: No secret key
 ```
 
