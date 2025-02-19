@@ -10,9 +10,9 @@
       tags: ssh
     - role: oefenweb.fail2ban
       tags: fail2ban
+    - role: nullmailer
+      tags: mail
 # TODO
-#    - role: nullmailer
-#      tags: mail
 #    - role: munin-node
 #      tags: [munin, munin-node]
 #    - firewall DENY input + verify ssh rule

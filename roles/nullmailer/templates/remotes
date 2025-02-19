@@ -1,0 +1,4 @@
+# {{ ansible_managed }}
+{% for remote in nullmailer__remotes %}
+{{ remote }}
+{% endfor %}

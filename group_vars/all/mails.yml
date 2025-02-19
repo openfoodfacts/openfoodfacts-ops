@@ -1,0 +1,27 @@
+---
+##
+# Mailjet smtp configuration (authentication in mails-secrets.yml)
+##
+mailjet__smtp_host: in-v3.mailjet.com
+mailjet__stmp_port: 587
+mailjet__smtp_tls: true
+
+##
+# nullmailer default configuration (using mailjet)
+##
+# Send all mails though mailjet only
+nullmailer__remotes:
+  - >
+    {{ mailjet__smtp_host }}
+    smtp --port={{ mailjet__stmp_port }}
+    {% if mailjet__smtp_tls %}--starttls{% endif %}
+    --user={{ mailjet__api_key }}
+    --pass={{ mailjet__secret_key }}
+
+# All mails to <user>@localhost or <user>@<nullmailer__mailname>
+# are redirected to this email (ie. no local mailbox)
+nullmailer__admin: infra@openfoodfacts.org
+
+# Configure to nullmailer to use host_domain as default mailing domain
+# so unconfigured mail are emited in @<host_domain>
+nullmailer__domain: '{{ host_domain }}'

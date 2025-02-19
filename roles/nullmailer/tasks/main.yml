@@ -1,0 +1,22 @@
+---
+- name: Install nullmailer package
+  apt: name=nullmailer state=present
+
+- name: Set nullmailer configuration
+  template: src={{ item.src }} dest=/etc/nullmailer/{{ item.path }} mode=0644
+  with_filetree:
+    - ../templates
+  loop_control:
+    label: '{{ item.path }}'
+  notify: restart nullmailer
+  tags:
+    - config
+
+- name: Set mailname for applications using it
+  copy: dest=/etc/mailname content='{{ nullmailer__mailname }}\n' mode=0644
+  notify: restart nullmailer
+  tags:
+    - config
+
+- name: Ensure nullmailer service is started and enabled  at boot
+  service: name=nullmailer enabled=yes
