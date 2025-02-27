@@ -28,7 +28,8 @@ gpg --import new-dev_pubkey.gpg
 gpg --list-keys
 ```
 
-Write down the id the key (e.g. `C4B6441EE0AFC4FDCDA147C82ABD6FA245F741B7`). Tell gpg that you trust that the key really belongs to the person you want to add, by signing the key. Make sure you select the subkey 1 (the one that is used to encrypt/decrypt, more of that here: https://wiki.debian.org/Subkeys)
+Write down the id the key (e.g. `C4B6441EE0AFC4FDCDA147C82ABD6FA245F741B7`). Tell gpg that you trust that the key really belongs to the person you want to add, by signing the key. Make sure you select the subkey 1 (the one that is used to encrypt/decrypt, so with `usage: E`, more of that here: https://wiki.debian.org/Subkeys).
+If you have multiple secret keys/identity, you can add the `--local-user` option.
 
 ```
 gpg --edit-key C4B6441EE0AFC4FDCDA147C82ABD6FA245F741B7
