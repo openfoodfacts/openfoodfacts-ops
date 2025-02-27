@@ -113,3 +113,6 @@ unattended_random_sleep: base_unattended_random_sleep
 
 # Add with other base variables
 timezone: "{{ base_timezone | default(UTC) }}"
+
+# public_ipv6
+motd_public_ipv6: "{{ public_ipv6 | default(default_public_ipv6.address) | default(false) }}"
