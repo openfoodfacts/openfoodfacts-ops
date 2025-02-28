@@ -56,6 +56,22 @@ To give access to a new user, someone which already has access to the repository
 
 Then the new user can use his private key to decrypt the repository private key.
 
+```mermaid
+sequenceDiagram
+    Local->>Local:$ git-crypt
+    Local->>Local:$ nano ./.gitattributes
+    Note left of Local: choose the files needed <br>to be encrypted
+    Note left of Local: Work on your local repo...
+    Local->>+remote: $ git push
+    Note right of remote: Encrypted files
+    Local->>+remote: $ git clone
+    remote-->>Local:cloning...
+    Local->>Local: $ git-crypt unlock
+    Note left of Local: Files decrypted.<br>Work on your local repo...
+    Local->>+remote: $ git push
+    Note right of remote: Encrypted files
+```
+
 You can get the ID of the key corresponding to such a file:
 
 ```sh
