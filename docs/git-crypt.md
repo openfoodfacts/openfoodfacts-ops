@@ -18,7 +18,7 @@ secrets.yml filter=git-crypt diff=git-crypt
 ```sh
 gpg --full-generate-key
 gpg --list-keys
-gpg --armor --output public.key --export your.name@appenin.fr
+gpg --armor --output public.key --export your.name@your.domain
 ```
 
 ## Add a new developer
@@ -58,17 +58,17 @@ Then the new user can use his private key to decrypt the repository private key.
 You can get the ID of the key corresponding to such a file:
 
 ```sh
-$ gpg --decrypt C4B6441EE0AFC4FDCDA147C82ABD6FA245F741B7.gpg
-gpg: encrypted with ECDH key, ID 7371F7BF5E541E09
+$ gpg --decrypt C4B64HHEE0AFC4FDCDA147C82ABD6FA245F741B7.gpg
+gpg: encrypted with ECDH key, ID 73A3F7BF5E541E09
 gpg: decryption failed: No secret key
 ```
 
 If you already know the key, you'll also get friendly information:
 
 ```sh
-$ gpg --decrypt C4B6441EE0AFC4FDCDA147C82ABD6FA245F741B7.gpg
-gpg: encrypted with 255-bit ECDH key, ID 7371F7BF5E541E09, created 2025-02-14
-      "Alex Garel (Open Food Facts) <alex@openfoodfacts.org>"
+$ gpg --decrypt C4B64HHEE0AFC4FDCDA147C82ABD6FA245F741B7.gpg
+gpg: encrypted with 255-bit ECDH key, ID 73A3F7BF5E541E09, created 2025-02-14
+      "Some Guy (Open Food Facts) <your.name@your.domain>"
 gpg: decryption failed: No secret key
 ```
 
