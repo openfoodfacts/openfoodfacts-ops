@@ -11,5 +11,5 @@ roles:
     version: v0.25.0
   - src: oefenweb.fail2ban
     version: v4.0.10
-  - src: ipr-cnrs.nftables
-    version: v2.2.4
+  - src: lae.proxmox
+    version: v1.9.1

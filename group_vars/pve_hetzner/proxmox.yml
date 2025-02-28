@@ -1,0 +1,30 @@
+# variables for the Hetzner Proxmox cluster
+---
+# see defaults in https://github.com/lae/ansible-role-proxmox/blob/develop/defaults/main.yml
+# and common vars in proxmox_nodes
+# cluster name
+pve_group: pve_hetzner
+# FIXME
+#pve_ssl_private_key
+#pve_ssl_certificate
+
+pve_zfs_create_volumes:
+- hdd-zfs/pve
+- hdd-zfs/backups
+
+pve_storages:
+  - name: hdd-zfs
+    type: zfspool
+    pool: hdd-zfs/pve
+    content: rootdir,images
+    mountpoint: /hdd-zfs/pve
+    sparse: 0
+    shared: 0
+  - name: local
+    type: dir
+    path: /var/lib/vz
+    content: vztmpl,snippets,iso
+    shared: 0
+
+# FIXME
+# interfaces_template:
