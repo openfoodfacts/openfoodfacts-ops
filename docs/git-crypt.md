@@ -1,21 +1,5 @@
 # Git-crypt
 
-```mermaid
-sequenceDiagram
-    Local->>Local:$ git-crypt
-    Local->>Local:$ nano ./.gitattributes
-    Note left of Local: choose the files needed <br>to be encrypted
-    Note left of Local: Work on your local repo...
-    Local->>+remote: $ git push
-    Note right of remote: Encrypted files
-    Local->>+remote: $ git clone
-    remote-->>Local:cloning...
-    Local->>Local: $ git-crypt unlock
-    Note left of Local: Files decrypted.<br>Work on your local repo...
-    Local->>+remote: $ git push
-    Note right of remote: Encrypted files
-```
-
 To execute the Ansible playbooks, you need to have `git-crypt` installed and have your GPG key added to the repository by someone who already has permissions. They will add it using the command `git-crypt add-gpg-user USER_ID`, where `USER_ID` is an email address or a GPG fingerprint.
 
 Once this step is completed, you can unlock the repository with the command `git-crypt unlock`.  
@@ -70,6 +54,22 @@ The repository is (partially) encrypted using a private key.
 To give access to a new user, someone which already has access to the repository private key will use the public key of the new user to encrypt the repository private key. The resulting file will be added in the directory `.git-crypt/keys/default/0`.
 
 Then the new user can use his private key to decrypt the repository private key.
+
+```mermaid
+sequenceDiagram
+    Local->>Local:$ git-crypt
+    Local->>Local:$ nano ./.gitattributes
+    Note left of Local: choose the files needed <br>to be encrypted
+    Note left of Local: Work on your local repo...
+    Local->>+remote: $ git push
+    Note right of remote: Encrypted files
+    Local->>+remote: $ git clone
+    remote-->>Local:cloning...
+    Local->>Local: $ git-crypt unlock
+    Note left of Local: Files decrypted.<br>Work on your local repo...
+    Local->>+remote: $ git push
+    Note right of remote: Encrypted files
+```
 
 You can get the ID of the key corresponding to such a file:
 
