@@ -1,0 +1,11 @@
+# variables for nftables
+---
+
+# this is based upon default rules provided by ipr-cnrs.nftables
+# see https://galaxy.ansible.com/ui/standalone/roles/ipr-cnrs/nftables/documentation/#os-specific-variables
+# default input policy is drop
+# but default output policy is accept
+nft_output_group_rules:
+  000 policy:
+    - type filter hook output priority 0; policy accept;
+nft_service_enabled: false  # while testing
