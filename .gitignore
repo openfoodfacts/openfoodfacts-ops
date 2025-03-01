@@ -1,8 +1,7 @@
 # Ansible
 .vagrant/
 collections/
-roles/willshersystems.sshd/
-roles/oefenweb.fail2ban/
+roles.galaxy/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

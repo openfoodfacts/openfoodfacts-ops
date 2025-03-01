@@ -1,0 +1,34 @@
+# variables for the Hetzner Proxmox cluster
+---
+# see defaults in https://github.com/lae/ansible-role-proxmox/blob/develop/defaults/main.yml
+# and specific vars in each cluster group
+
+# General ######
+
+# permissions ######
+
+# for privacy reasons, it's in proxmox-secrets.yml
+pve_users: "{{ secrets_pve_users }}"
+
+pve_groups:
+  - name: ro_users
+    comment: Read only ro_users
+  - name: admins
+    comment: Administrators
+pve_acls:
+  - path: /
+    roles: [ "Administrator" ]
+    groups: [ "admins" ]
+  - path: /
+    roles: [ "PVEAuditor" ]
+    groups: [ "ro_users" ]
+pve_storages:
+  - name: localdir
+    type: dir
+    content: [ "images", "iso", "backup" ]
+    path: /plop
+    maxfiles: 4
+
+# disks  ######
+pve_zfs_enabled: yes
+pve_zfs_zed_email: "{{ secrets_root_email }}"

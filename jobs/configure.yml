@@ -8,10 +8,12 @@
       tags: base
     - role: sshd
       tags: ssh
-    - role: oefenweb.fail2ban
-      tags: fail2ban
     - role: nullmailer
       tags: mail
+    - role: fail2ban-nftables
+      tags: fail2ban
+    #- role: ipr-cnrs.nftables
+    #  tags: firewall
 # TODO
 #    - role: munin-node
 #      tags: [munin, munin-node]

@@ -27,18 +27,28 @@
 - name: "Install essential apt dependencies"
   ansible.builtin.apt:
     pkg:
+      # apt tools
       - apt-transport-https
       - aptitude
+      - unattended-upgrades
+      # sys admin tools
+      - lsb-release
+      - etckeeper
+      # network tools
       - curl
-      - dirmngr
+      - rsync
+      # dev tools
       - git
+      # security tools
+      - dirmngr
+      - sudo
+      # perfs tools
       - htop
       - iotop
-      - lsb-release
+      # utilities
       - screen
-      - sudo
-      - unattended-upgrades
       - vim
+      # ansible
       - '{{ python_pkg_prefix }}-apt'
       - '{{ python_pkg_prefix }}-httplib2'
       - '{{ python_pkg_prefix }}-pip'
