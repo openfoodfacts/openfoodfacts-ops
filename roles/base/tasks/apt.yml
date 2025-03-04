@@ -34,6 +34,7 @@
       # sys admin tools
       - lsb-release
       - etckeeper
+      - molly-guard
       # network tools
       - curl
       - rsync

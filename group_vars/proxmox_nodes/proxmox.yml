@@ -5,6 +5,8 @@
 
 # General ######
 
+proxmox_node_alerts_email: "{{ secrets_root_email }}"
+
 # permissions ######
 
 # for privacy reasons, it's in proxmox-secrets.yml
@@ -29,6 +31,12 @@ pve_storages:
     path: /plop
     maxfiles: 4
 
-# disks  ######
-pve_zfs_enabled: yes
-pve_zfs_zed_email: "{{ secrets_root_email }}"
+
+# ZFS ###########
+
+# this is a variable that can be used for proxmox_node_zfs_pools.filesystem_properties
+proxmox_node_zfs_pools_filesystem_properties_defaults:
+  compression: "on"
+  xattr: "sa"
+  atime: "off"
+  relatime: "on"
