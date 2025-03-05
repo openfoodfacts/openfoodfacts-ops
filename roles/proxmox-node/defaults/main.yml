@@ -1,4 +1,9 @@
 ---
+# the partitions you want to create or remove
+# use this to create partitions for you zpool if needed
+proxmox_node_partitions:  []
+
+# the zfs pools you want to create or remove
 proxmox_node_zfs_pools: []
 # supported keys, see https://github.com/aisbergg/ansible-role-zfs
 # for example:
@@ -11,9 +16,19 @@ proxmox_node_zfs_pools: []
 #      xattr:sa
 #      atime:off
 #      relatime:on
+
+# the filesystems you want to create or remove
+# normally you should use this for zfs datasets that are necessary for the system
+# not the one managed by proxmox, like containers or virtual machines
 proxmox_node_zfs_filesystems: []
 # supported keys, see https://github.com/aisbergg/ansible-role-zfs
 proxmox_node_zfs_volumes: []
 # supported keys, see https://github.com/aisbergg/ansible-role-zfs
 
 proxmox_node_alerts_email: ''
+
+# should we create the partitions or just check if they are there?
+# NOTE: the idea is to set that manually to true on the command line, 
+# when you want to create the partitions
+# -e "proxomox_node_mkparts=true"
+proxomox_node_mkparts: false

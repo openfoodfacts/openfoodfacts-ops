@@ -8,28 +8,8 @@ pve_group: pve_hetzner
 #pve_ssl_private_key
 #pve_ssl_certificate
 
-proxmox_node_zfs_filesystems:
-- name: hdd-zfs/pve
-- name: hdd-zfs/backups
+# ZFS for compute servers
 
-pve_storages:
-  - name: hdd-zfs-pve
-    type: zfspool
-    pool: hdd-zfs/pve
-    content: rootdir,images
-    mountpoint: /hdd-zfs/pve
-    sparse: 0
-    shared: 0
-  - name: local
-    type: dir
-    path: /var/lib/vz
-    content: vztmpl,snippets,iso
-    shared: 0
-  # removing installed storage
-  - name: hdd-zfs
-    type: zfspool
-    pool: hdd-zfs
-    state: absent
 
 # FIXME
 # interfaces_template:
