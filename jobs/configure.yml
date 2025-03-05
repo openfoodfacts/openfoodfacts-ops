@@ -10,10 +10,10 @@
       tags: ssh
     - role: nullmailer
       tags: mail
+    - role: iptables
+      tags: firewall
     - role: fail2ban-nftables
       tags: fail2ban
-    #- role: ipr-cnrs.nftables
-    #  tags: firewall
 # TODO
 #    - role: munin-node
 #      tags: [munin, munin-node]
