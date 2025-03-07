@@ -12,7 +12,7 @@
       tags: mail
     - role: iptables
       tags: firewall
-    - role: fail2ban-nftables
+    - role: fail2ban-iptables
       tags: fail2ban
 # TODO
 #    - role: munin-node
