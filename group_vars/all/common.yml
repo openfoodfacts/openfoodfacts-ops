@@ -33,3 +33,6 @@ off_private_networks_v4:
 
 # FIXME
 off_private_networks_v6: []
+
+# Are we a proxmox host ?
+is_proxmox_host: "{{ 'proxmox_nodes' in groups }}"
