@@ -29,7 +29,7 @@
   ansible.builtin.lineinfile:
     dest: /etc/hosts
     regexp: '^127\.0\.0\.1[\s\t]+'
-    line: '127.0.0.1 {{ inventory_hostname }}.{{ host_domain }} {{ inventory_hostname }} localhost'
+    line: '127.0.0.1 {{ inventory_hostname }}.localhost localhost'
     state: present
   tags:
     - host
@@ -41,6 +41,17 @@
     line: '{{ ansible_default_ipv4.address }} {{ inventory_hostname }}.{{ host_domain }} {{ inventory_hostname }}'
     insertafter: '^127\.0\.0\.1[\s\t]+'
     state: present
+  tags:
+    - host
+
+- name: "Proper /etc/hosts ipv6 reference to FQDN"
+  ansible.builtin.lineinfile:
+    dest: /etc/hosts
+    regexp: '^{{ ansible_default_ipv6.address | regex_escape() }}[\s\t]+'
+    line: '{{ ansible_default_ipv6.address }} {{ inventory_hostname }}.{{ host_domain }} {{ inventory_hostname }}'
+    insertafter: '^127\.0\.0\.1[\s\t]+'
+    state: present
+  when: "ansible_default_ipv6.address is defined"
   tags:
     - host
 

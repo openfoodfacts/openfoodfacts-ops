@@ -1,0 +1,9 @@
+# installation of a proxmox node (host that is part of a proxmox cluster)
+---
+- name: Proxmox Node
+  hosts: proxmox_nodes:!non_ansible_hosts
+  gather_facts: true
+  become: true
+  roles:
+    - role: proxmox-node
+      tags: ["base", "proxmox"]

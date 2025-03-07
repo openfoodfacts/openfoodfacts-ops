@@ -1,0 +1,38 @@
+
+proxmox_node_zfs_pools:
+  - name: rpool
+    vdev: raidz1 nvme0n1p5 nvme1n1p5
+    properties:
+      ashift: "12"
+    filesystem_properties: "{{ proxmox_node_zfs_pools_filesystem_properties_defaults }}"
+
+proxmox_node_zfs_filesystems:
+- name: rpool/pve
+- name: rpool/backups
+
+pve_storages:
+  - name: rpool-pve
+    type: zfspool
+    pool: rpool/pve
+    content: rootdir,images
+    mountpoint: /rpool/pve
+    sparse: 0
+    shared: 0
+  - name: local
+    type: dir
+    path: /var/lib/vz
+    content: vztmpl,snippets,iso
+    shared: 0
+
+# proxmox_node_partitions:
+# - name: nvme0n1p5
+#     device: "{{ item.device }}"
+#     state: "{{ item.state | default('present') }}"
+#     fs_type: "{{ item.fs_type }}"
+#     flags: "{{ item.flags | default([]) }}"
+#     label: "{{ item.flags | default('gpt') }}"
+#     number: "{{ item.number }}"
+#     part_end: "{{ item.part_end | default('100%')}}"
+#     part_start: "{{ item.part_start | default('1') }}"
+#     part_type: "{{ item.part_type | default('primary') }}"
+#     resize: "{{ item.resize | default('false') }}"

@@ -1,0 +1,78 @@
+# {{ ansible_managed }}
+# Note: https://zersh01.github.io/iptables_interactive_scheme/ might help you
+# See also the /etc/iptables/ipsets file
+{% if iptables_rules_version == "v6" %}
+{% set private_net_set = 'PrivateNet6' %}
+{% set internal_host_set = 'InternalHost6' %}
+{% set icmp_name = 'icmpv6' %}
+{% set localhost_name = '::1' %}
+{% set iptables_extra_rules_filter = iptables_extra_rules_filter_v6 %}
+{% set iptables_extra_rules_nat = iptables_extra_rules_nat_v6 %}
+{% else %}
+{% set private_net_set = 'PrivateNet4' %}
+{% set internal_host_set = 'InternalHost4' %}
+{% set icmp_name = 'icmp' %}
+{% set localhost_name = 'lo' %}
+{% set iptables_extra_rules_filter = iptables_extra_rules_filter_v4 %}
+{% set iptables_extra_rules_nat = iptables_extra_rules_nat_v4 %}
+{% endif %}
+# RAW START ##############
+*raw
+:PREROUTING ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+COMMIT
+# RAW END ##############
+#
+# FILTER START ##############
+*filter
+# Policies
+{% for name in ["INPUT", "FORWARD", "OUTPUT"] %}
+:{{ name }} {{ 'ACCEPT' if name|lower in iptables_accept_policy.filter else 'DROP' }} - [0:0]
+{% endfor %}
+# Established connection
+-A INPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT
+# icmp (ping)
+-A INPUT -p {{ icmp_name }} -j ACCEPT
+# Localhost traffic
+-A INPUT -i {{ localhost_name }} -j ACCEPT
+# Private network traffic
+-A INPUT -m set --match-set {{ private_net_set }} src -j ACCEPT
+# Public ports
+{% for port in iptables_public_ports %}
+-A INPUT -p tcp -m tcp --dport {{ port }} -j ACCEPT
+{% endfor %}
+# Internal host exposed ports
+{% for port in iptables_internal_hosts_only_ports %}
+-A INPUT -m set --match-set {{ internal_host_set }} src -p tcp -m tcp --dport port -j ACCEPT
+{% endfor %}
+# Extra rules
+{% for comment, rule in iptables_extra_rules_filter_v4.items()|sort(attribute='0') %}
+# {{ comment }}
+{{ value }}
+{% endfor %}
+COMMIT
+# FILTER END ##############
+#
+# NAT START ##############
+*nat
+{% for name in ["PREROUTING", "INPUT", "OUTPUT", "POSTROUTING"] %}
+:{{ name }} {{ 'ACCEPT' if name|lower in iptables_accept_policy.nat else 'DROP' }} - [0:0]
+{% endfor %}
+# masquerading private network
+-A POSTROUTING -m set --match-set {{ private_net_set }} src -j MASQUERADE
+# Extra rules
+{% for comment, rule in iptables_extra_rules_nat_v4.items()|sort(attribute='0') %}
+# {{ comment }}
+{{ value }}
+{% endfor %}
+COMMIT
+# NAT END ##############
+# MANGLE START ##############
+*mangle
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+COMMIT
+# MANGLE END ##############

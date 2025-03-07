@@ -1,7 +1,7 @@
 ---
 base_timezone: Europe/Paris
 
-base_unattended_mail: infra@openfoodfacts.org
+base_unattended_mail: "{{ secrets_infra_email }}"
 
 base_unattended_mail_only_on_error: true
 

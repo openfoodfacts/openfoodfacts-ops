@@ -10,6 +10,9 @@ certificates/* filter=git-crypt diff=git-crypt
 
 # Encrypt private ssh keys
 keys/*.key filter=git-crypt diff=git-crypt
+# Encrypt passwords (although they are already encrypted)
+*-password.txt filter=git-crypt diff=git-crypt
+
 
 # Just in case: more encrypted filenames format (mistakes happen)
 Secrets.yml filter=git-crypt diff=git-crypt
