@@ -1,12 +1,4 @@
 ---
-# do this ahead to eventually fail fast
-- name: Generate Passwords in case we need it
-  become: false
-  local_action:
-    module: ansible.builtin.command
-    cmd: pwgen -N 1 16
-  register: user_password
-
 - name: Check if users exists
   ansible.builtin.command:
     id {{ user.name }}
@@ -27,56 +19,10 @@
     groups: "{{ ['adm', 'sudo'] if user.is_superuser else '' }}"
     state: "{{ user.state  | default('present') }}"
     shell: "{{ '/usr/bin/false' if not user_has_password else '/bin/bash' }}"
-    # For creation only, we will handle password later
+    # We use a '*' password and handle users with password later
     password: '*'
+    update_password: "on_create"
 
-- name: Copy authorized key
-  ansible.posix.authorized_key:
-    user: "{{ user.name }}"
-    key: '{{ github_url }}/{{ user.github_name | default(user.name) }}.keys'
-    exclusive: true
-
-- name: Set a password to new user
-  # only if new user, and only if superuser on proxmox nodes
-  when: "((user.state | default('present')) == 'present') and (user_exists_cmd.rc != 0) and user_has_password"
-  block:
-    - name: Ensure user directory for passwords
-      become: false
-      local_action:
-        module: ansible.builtin.file
-        path: '{{ user_password_dir }}'
-        state: directory
-
-    - name: Get github public key
-      become: false
-      local_action:
-        module: ansible.builtin.get_url
-        url: '{{ github_url }}/{{ user.github_name | default(user.name) }}.keys'
-        dest: '/tmp/{{ user.name }}.pub'
-        force: true
-        mode: 0600
-
-    - name: Save password in a file
-      become: false
-      local_action:
-        module: ansible.builtin.copy
-        content: "{{ user_password.stdout }}"
-        dest: '{{ user_password_dir }}/{{ ansible_hostname}}-password.tmp'
-        mode: 0600
-      register: user_password_file
-
-    - name: encrypt file with user public ssh key
-      become: false
-      local_action:
-        module: ansible.builtin.shell
-        cmd: |
-          ssh-keygen -f  /tmp/{{ user.name }}.pub -e -m pem > /tmp/{{ user.name }}.pem && \
-          openssl pkeyutl -encrypt -inkey /tmp/{{ user.name }}.pem -pubin -in {{ user_password_dir }}/{{ ansible_hostname }}-password.tmp -out {{ user_password_dir }}/{{ ansible_hostname }}-password.txt && \
-          rm {{ user_password_dir }}/{{ ansible_hostname}}-password.tmp
-
-    - name: Update User Password
-      user:
-        name: '{{ user.name }}'
-        password: "{{ user_password.stdout | password_hash('sha512')}}"
-        update_password: on_create
-  tags: ["user", "password"]
+- name: Force user to set password on first login
+  when: user_has_password and user_exists_cmd.rc != 0
+  ansible.builtin.command: "passwd -e -d {{ user.name }}"
