@@ -1,5 +1,5 @@
 ---
-- name: Check if users exists
+- name: Check if user exists
   ansible.builtin.command:
     id {{ user.name }}
   become: true

@@ -1,19 +1,5 @@
 # Default authorized users from github
-sshd_github_authorized_users:
-  - name: alex
-    github_name: alexgarel
-    is_superuser: true
-  - name: CharlesNepote
-    is_superuser: true
-  - name: raphael0202
-    is_superuser: true
-  - name: stephane
-    is_superuser: true
-    github_name: stephanegigandet
-  - name: teleboas
-    is_superuser: true
-  - name: cquest
-    is_superuser: true
+sshd_github_authorized_users: "{{ system_users_github_authorized_users | selectattr('is_superuser') | rejectattr('state', 'equalto', 'absent') }}"
 
 # Default revoked users from github
-sshd_github_revoked_users: []
+sshd_github_revoked_users: "{{ system_users_github_authorized_users | selectattr('is_superuser') | selectattr('state', 'equalto', 'absent') }}"

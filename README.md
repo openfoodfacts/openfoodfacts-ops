@@ -110,19 +110,20 @@ ansible-playbook sites/monitoring.openfoodfacts.org.yml
 #### User Management
 
 ##### Add New User
-1. Edit `group_vars/all/sshd.yml` to add user to `sshd_github_authorized_users`
+1. Edit `group_vars/all/system-users.yml` to add user to `system_users_github_authorized_users` with state 'present'.
+   Set if he is super_user, that means it has access to host and sudo access.
 2. Run:
-```bash
-ansible-playbook jobs/configure.yml
-```
+   ```bash
+   ansible-playbook jobs/configure.yml
+   ```
 
 ##### Revoke User Access
-1. Remove user from `sshd_github_authorized_users`
-2. Add to `sshd_github_revoked_users`
+1. Edit `group_vars/all/system-users.yml` to
+   change `state` to `absent` for the user in `system_users_github_authorized_users`
 3. Run:
-```bash
-ansible-playbook jobs/configure.yml
-```
+   ```bash
+   ansible-playbook jobs/configure.yml
+   ```
 
 
 
@@ -147,9 +148,6 @@ ansible-playbook jobs/configure.yml
 ├── jobs                                # Maintenance tasks as playbooks
 │   ├── configure.yml
 │   └── ...
-├── keys                                # SSH keys
-│   ├── default.pub                     # default public key
-│   └── ... 
 ├── plugins                             # Ansible plugins
 │   ├── filters
 │   ├── lookup

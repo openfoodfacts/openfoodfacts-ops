@@ -8,6 +8,8 @@
       tags: base
     - role: sshd
       tags: ssh
+    - role: system-users
+      tags: users
     - role: nullmailer
       tags: mail
     - role: iptables

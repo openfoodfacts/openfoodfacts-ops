@@ -12,34 +12,15 @@
     - system
     - mosh
 
-- name: Copy default ssh public key for ansible operator
-  ansible.posix.authorized_key:
-    user: '{{ ansible_ssh_user }}'
-    key: '{{ lookup("repo", "keys/default.pub") }}'
-
 - name: Authorize ssh public keys from github for ansible operator
   ansible.posix.authorized_key:
     user: '{{ ansible_ssh_user }}'
-    key: '{{ github_url }}/{{ item.github_name | default(item.name) }}.keys'
-  loop: '{{ github_authorized_users }}'
+    key: '{{ sshd_github_url }}/{{ item.github_name | default(item.name) }}.keys'
+  loop: '{{ sshd_github_authorized_users }}'
 
 - name: Revoke ssh public keys from github for ansible operator
   ansible.posix.authorized_key:
     user: '{{ ansible_ssh_user }}'
-    key: '{{ github_url }}/{{ item.github_name | default(item.name) }}.keys'
+    key: '{{ sshd_github_url }}/{{ item.github_name | default(item.name) }}.keys'
     state: absent
-  loop: '{{ github_revoked_users }}'
-
-- ansible.builtin.debug:
-    msg: "is proxmox host: {{ is_proxmox_host }} - {{ groups}}"
-
-- name: "Handle user creation"
-  ansible.builtin.include_tasks: create_user.yml
-  vars:
-    user: "{{ item }}"
-    user_has_password: "{{ item.is_superuser and is_proxmox_host }}"
-    user_password_dir: '{{ lookup("repo", "keys", filename=True) }}/{{ item.name }}'
-  loop: '{{ github_authorized_users }}'
-  loop_control:
-    label: "{{ item.name }}"
-  tags: 'user'
+  loop: '{{ sshd_github_revoked_users }}'
