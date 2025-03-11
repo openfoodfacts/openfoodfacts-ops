@@ -13,7 +13,7 @@
     - role: nullmailer
       tags: mail
     - role: iptables
-      tags: firewall
+      tags: ["firewall", "iptables"]
     - role: fail2ban-iptables
       tags: fail2ban
 # TODO
