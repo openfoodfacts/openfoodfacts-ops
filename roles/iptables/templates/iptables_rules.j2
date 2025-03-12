@@ -43,7 +43,7 @@ COMMIT
 {% endfor %}
 # Internal host exposed ports
 {% for port in iptables_internal_hosts_only_ports %}
--A INPUT -m set --match-set {{ internal_host_set }} src -p tcp -m tcp --dport port -j ACCEPT
+-A INPUT -m set --match-set {{ internal_host_set }} src -p tcp -m tcp --dport {{ port }} -j ACCEPT
 {% endfor %}
 # Extra rules
 {% for comment, rule in iptables_extra_rules_filter_v4.items()|sort(attribute='0') %}
