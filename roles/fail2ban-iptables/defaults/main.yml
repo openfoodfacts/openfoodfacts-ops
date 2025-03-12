@@ -1,12 +1,6 @@
 # you might set it to INFO on service with low traffic or to monitor more closely
 fail2ban_iptables_loglevel: NOTICE
-fail2ban_iptables_ignoreips: >-
-  {{
-    off_internal_hosts_ips_v4
-    | union(off_private_networks_v4)
-    | union(off_internal_hosts_ips_v6)
-    | union(off_private_networks_v6)
-  }}
+fail2ban_iptables_ignoreips: []
 
 fail2ban_iptables_backend: systemd
 
