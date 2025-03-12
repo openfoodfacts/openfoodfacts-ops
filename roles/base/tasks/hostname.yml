@@ -29,7 +29,7 @@
   ansible.builtin.lineinfile:
     dest: /etc/hosts
     regexp: '^127\.0\.0\.1[\s\t]+'
-    line: '127.0.0.1 {{ inventory_hostname }}.localhost localhost'
+    line: '127.0.0.1 {{ inventory_hostname }}.{{ host_domain }} {{ inventory_hostname }} localhost'
     state: present
   tags:
     - host
@@ -55,6 +55,8 @@
   tags:
     - host
 
+# remove reference to 127.0.1.1 added by debian,
+# which is not the same as 127.0.0.1
 - name: "No /etc/hosts reference to 127.0.1.1"
   ansible.builtin.lineinfile:
     dest: /etc/hosts
