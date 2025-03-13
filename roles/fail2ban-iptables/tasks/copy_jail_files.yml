@@ -1,0 +1,34 @@
+# Copy extra files for a jail
+# It correspond to copying all files containing the jail name to their destination
+---
+# get files to copy or remove
+- name: "Get jail files"
+  local_action:
+    module: ansible.builtin.find
+    paths: "{{ role_path }}/files"
+    patterns: ".*{{ jail }}\\..*"
+    use_regex: true
+    recurse: no
+  become: no
+  register: jail_files
+
+- name: "debug jail files"
+  ansible.builtin.debug:
+    msg: "{{ jail }}: {{ jail_files.files }} {{ role_path}}"
+
+
+- name: "Debug jail files"
+  ansible.builtin.debug:
+      msg: "/etc/fail2ban/{{ file.path | replace(role_path + '/files', '') | replace('--', '/') }}"
+  loop: "{{ jail_files.files }}"
+  loop_control:
+    loop_var: file
+
+- name: "Copy jail files"
+  ansible.builtin.copy:
+      src: "{{ file.path }}"
+      dest: "/etc/fail2ban/{{ file.path | replace( role_path + '/files', '') | replace('--', '/') }}"
+  loop: "{{ jail_files.files }}"
+  loop_control:
+    loop_var: file
+  notify: restart fail2ban
