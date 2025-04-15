@@ -28,7 +28,8 @@ gpg --import new-dev_pubkey.gpg
 gpg --list-keys
 ```
 
-Write down the id the key (e.g. `C4B6441EE0AFC4FDCDA147C82ABD6FA245F741B7`). Tell gpg that you trust that the key really belongs to the person you want to add, by signing the key. Make sure you select the subkey 1 (the one that is used to encrypt/decrypt, more of that here: https://wiki.debian.org/Subkeys)
+Write down the id the key (e.g. `C4B6441EE0AFC4FDCDA147C82ABD6FA245F741B7`). Tell gpg that you trust that the key really belongs to the person you want to add, by signing the key. Make sure you select the subkey 1 (the one that is used to encrypt/decrypt, so with `usage: E`, more of that here: https://wiki.debian.org/Subkeys).
+If you have multiple secret keys/identity, you can add the `--local-user` option.
 
 ```
 gpg --edit-key C4B6441EE0AFC4FDCDA147C82ABD6FA245F741B7
@@ -54,6 +55,22 @@ The repository is (partially) encrypted using a private key.
 To give access to a new user, someone which already has access to the repository private key will use the public key of the new user to encrypt the repository private key. The resulting file will be added in the directory `.git-crypt/keys/default/0`.
 
 Then the new user can use his private key to decrypt the repository private key.
+
+```mermaid
+sequenceDiagram
+    Local->>Local:$ git-crypt
+    Local->>Local:$ nano ./.gitattributes
+    Note left of Local: choose the files needed <br>to be encrypted
+    Note left of Local: Work on your local repo...
+    Local->>+remote: $ git push
+    Note right of remote: Encrypted files
+    Local->>+remote: $ git clone
+    remote-->>Local:cloning...
+    Local->>Local: $ git-crypt unlock
+    Note left of Local: Files decrypted.<br>Work on your local repo...
+    Local->>+remote: $ git push
+    Note right of remote: Encrypted files
+```
 
 You can get the ID of the key corresponding to such a file:
 
