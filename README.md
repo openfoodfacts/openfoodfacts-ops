@@ -48,6 +48,12 @@ python3 -m pip install -r requirements.pip
 ansible-galaxy install -r requirements.yml
 ```
 
+If you want to add [autocompletion](https://docs.ansible.com/ansible/devel/installation_guide/intro_installation.html#adding-ansible-command-shell-completion) for ansible commands:
+```bash
+python3 -m pip install argcomplete
+activate-global-python-argcomplete --user
+
+```
 
 ## Usage
 
@@ -60,9 +66,40 @@ ansible all -m ping
 
 ### Common Tasks
 
+### Prepare a new host server
+
+If you are about to install a new host server (proxmox host, or standalone server),
+you must install debian.
+
+Then generate a random password.
+Put that password as value for `ansible_become_password` in `host_vars/<server-name>/<server-name>-secrets.yml`.
+
+Then ssh to the new server to add config-op user:
+```bash
+GITHUB_USER_NAME=<your-github-username>
+adduser config-op
+# use created password
+adduser config-op sudo
+# add your public key
+mkdir /home/config-op/.ssh
+curl https://github.com/$GITHUB_USER_NAME.keys >> /home/config-op/.ssh/authorized_keys
+chmod go-rwx -R /home/config-op/.ssh
+chown config-op:config-op -R /home/config-op/.ssh
+```
+
+Test you can connect to the new server using config-op user:
+```bash
+ssh config-op@<server-ip>
+```
+
+
 #### Configure Servers
 ```bash
 ansible-playbook jobs/configure.yml
+```
+or for a specific server:
+```bash
+ansible-playbook jobs/configure.yml -l <server-name>
 ```
 
 #### Deploy Monitoring
@@ -73,19 +110,20 @@ ansible-playbook sites/monitoring.openfoodfacts.org.yml
 #### User Management
 
 ##### Add New User
-1. Edit `group_vars/all/sshd.yml` to add user to `sshd_github_authorized_users`
+1. Edit `group_vars/all/system-users.yml` to add user to `system_users_github_authorized_users` with state 'present'.
+   Set if he is super_user, that means it has access to host and sudo access.
 2. Run:
-```bash
-ansible-playbook jobs/configure.yml
-```
+   ```bash
+   ansible-playbook jobs/configure.yml
+   ```
 
 ##### Revoke User Access
-1. Remove user from `sshd_github_authorized_users`
-2. Add to `sshd_github_revoked_users`
+1. Edit `group_vars/all/system-users.yml` to
+   change `state` to `absent` for the user in `system_users_github_authorized_users`
 3. Run:
-```bash
-ansible-playbook jobs/configure.yml
-```
+   ```bash
+   ansible-playbook jobs/configure.yml
+   ```
 
 
 
@@ -110,9 +148,6 @@ ansible-playbook jobs/configure.yml
 ├── jobs                                # Maintenance tasks as playbooks
 │   ├── configure.yml
 │   └── ...
-├── keys                                # SSH keys
-│   ├── default.pub                     # default public key
-│   └── ... 
 ├── plugins                             # Ansible plugins
 │   ├── filters
 │   ├── lookup

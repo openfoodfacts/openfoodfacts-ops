@@ -1,0 +1,9 @@
+
+# systematically ignore our servers ips
+fail2ban_iptables_ignoreips: >-
+  {{
+    off_internal_hosts_ips_v4 |
+    union(off_private_networks_v4) |
+    union(off_internal_hosts_ips_v6) |
+    union(off_private_networks_v6)
+  }}

@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+auto lo
+iface lo inet loopback
+
+allow-hotplug enp2s0f0
+iface enp2s0f0 inet manual
+
+auto vmbr0
+iface vmbr0 inet static
+    address {{ lookup('dig', ansible_fqdn) }}
+    gateway 10.4.0.1
+    netmask 255.255.255.0
+    bridge_ports enp2s0f0
+    bridge_stp off
+    bridge_fd 0
+
+allow-hotplug enp2s0f1
+auto enp2s0f1
+iface enp2s0f1 inet static
+    address {{ lookup('dig', ansible_hostname + "-clusternet.local") }}
+    netmask 255.255.255.0

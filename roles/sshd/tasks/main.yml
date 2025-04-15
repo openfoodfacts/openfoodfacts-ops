@@ -12,20 +12,15 @@
     - system
     - mosh
 
-- name: Copy default ssh public key for ansible operator
-  ansible.posix.authorized_key:
-    user: '{{ ansible_ssh_user }}'
-    key: '{{ lookup("repo", "keys/default.pub") }}'
-
 - name: Authorize ssh public keys from github for ansible operator
   ansible.posix.authorized_key:
     user: '{{ ansible_ssh_user }}'
-    key: '{{ github_url }}/{{ item }}.keys'
-  with_items: '{{ github_authorized_users }}'
+    key: '{{ sshd_github_url }}/{{ item.github_name | default(item.name) }}.keys'
+  loop: '{{ sshd_github_authorized_users }}'
 
 - name: Revoke ssh public keys from github for ansible operator
   ansible.posix.authorized_key:
     user: '{{ ansible_ssh_user }}'
-    key: '{{ github_url }}/{{ item }}.keys'
+    key: '{{ sshd_github_url }}/{{ item.github_name | default(item.name) }}.keys'
     state: absent
-  with_items: '{{ github_revoked_users }}'
+  loop: '{{ sshd_github_revoked_users }}'

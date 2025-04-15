@@ -44,6 +44,19 @@
   tags:
     - host
 
+- name: "Proper /etc/hosts ipv6 reference to FQDN"
+  ansible.builtin.lineinfile:
+    dest: /etc/hosts
+    regexp: '^{{ ansible_default_ipv6.address | regex_escape() }}[\s\t]+'
+    line: '{{ ansible_default_ipv6.address }} {{ inventory_hostname }}.{{ host_domain }} {{ inventory_hostname }}'
+    insertafter: '^127\.0\.0\.1[\s\t]+'
+    state: present
+  when: "ansible_default_ipv6.address is defined"
+  tags:
+    - host
+
+# remove reference to 127.0.1.1 added by debian,
+# which is not the same as 127.0.0.1
 - name: "No /etc/hosts reference to 127.0.1.1"
   ansible.builtin.lineinfile:
     dest: /etc/hosts
