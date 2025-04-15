@@ -6,3 +6,8 @@ fail2ban_iptables_backend: systemd
 
 fail2ban_iptables_services:
   - name: sshd
+
+fail2ban_iptables_debug: false
+
+# internal variable for copy_jail_files
+_fail2ban_iptables_iter_jail: null

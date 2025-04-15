@@ -12,5 +12,5 @@
 - name: "copy fail2ban needed config filters or other files"
   ansible.builtin.include_tasks: copy_jail_files.yml
   vars:
-    jail: "{{ item.name }}"
+    _fail2ban_iptables_iter_jail: "{{ item.name }}"
   loop: "{{ fail2ban_iptables_services }}"

@@ -1,12 +1,18 @@
 # Copy extra files for a jail
 # It correspond to copying all files containing the jail name to their destination
 ---
+
+- name: "Verify _fail2ban_iptables_iter_jail is set"
+  ansible.builtin.fail:
+    msg: "_fail2ban_iptables_iter_jail must be set when you call copy_jail_files"
+  when: not _fail2ban_iptables_iter_jail
+
 # get files to copy or remove
 - name: "Get jail files"
   local_action:
     module: ansible.builtin.find
     paths: "{{ role_path }}/files"
-    patterns: ".*{{ jail }}\\..*"
+    patterns: ".*{{ _fail2ban_iptables_iter_jail }}\\..*"
     use_regex: true
     recurse: no
   become: no
@@ -14,8 +20,8 @@
 
 - name: "debug jail files"
   ansible.builtin.debug:
-    msg: "{{ jail }}: {{ jail_files.files }} {{ role_path}}"
-
+    msg: "{{ _fail2ban_iptables_iter_jail }}: {{ jail_files.files }} {{ role_path}}"
+  when: fail2ban_iptables_debug
 
 - name: "Debug jail files"
   ansible.builtin.debug:
@@ -23,6 +29,7 @@
   loop: "{{ jail_files.files }}"
   loop_control:
     loop_var: file
+  when: fail2ban_iptables_debug
 
 - name: "Copy jail files"
   ansible.builtin.copy:
