@@ -1,8 +1,0 @@
-fail2ban_iptables_services:
-  - name: sshd
-  - name: proxmox
-    port: https,http,8006
-    filter: proxmox
-    maxretry: 3
-    findtime: 2d
-    bantime: 1h

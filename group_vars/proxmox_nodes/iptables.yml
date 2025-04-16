@@ -1,2 +1,0 @@
-# expose proxmox interface
-iptables_public_ports: [22, 8006]

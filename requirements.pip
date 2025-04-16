@@ -1,5 +1,0 @@
-ansible>=7.3.0
-ansible-compat>=3.0.1
-ansible-core>=2.14.3
-ansible-lint>=6.14.2
-passlib>=1.7.4
